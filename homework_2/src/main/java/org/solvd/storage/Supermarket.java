@@ -1,12 +1,13 @@
 package org.solvd.storage;
 
+import org.solvd.StoragePlaceSummarizable;
 import org.solvd.transaction.Cashier;
 import org.solvd.transaction.Register;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Supermarket {
+public class Supermarket implements StoragePlaceSummarizable {
     private String name;
     private String city;
     private String street;
@@ -95,5 +96,15 @@ public class Supermarket {
 
     public void setCashierList(List<Cashier> cashierList) {
         this.cashierList = cashierList;
+    }
+
+    @Override
+    public void summarize() {
+        System.out.printf("Summary of: " + this.name + "\n\n" + "Storage Places: \n");
+        for(StoragePlace storagePlace : storagePlaceList) {
+            storagePlace.summarize();
+        }
+        warehouse.summarize();
+        System.out.printf("End of summary\n\n");
     }
 }

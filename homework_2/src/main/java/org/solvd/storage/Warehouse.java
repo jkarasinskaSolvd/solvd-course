@@ -1,9 +1,11 @@
 package org.solvd.storage;
 
+import org.solvd.StoragePlaceSummarizable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse {
+public class Warehouse implements StoragePlaceSummarizable {
     private List<StoragePlace> places;
 
     public Warehouse() {
@@ -27,4 +29,12 @@ public class Warehouse {
         originalPlace.products.clear();
     }
 
+    @Override
+    public void summarize() {
+        System.out.printf("Summary of warehouse.\n");
+        for(StoragePlace storagePlace : places) {
+            storagePlace.summarize();
+        }
+        System.out.printf("End of warehouse summary\n\n");
+    }
 }

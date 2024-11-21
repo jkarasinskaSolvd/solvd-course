@@ -1,12 +1,15 @@
 package org.solvd.storage;
 
+import org.solvd.TemperatureChangable;
 import org.solvd.product.Category;
 import org.solvd.product.StorageMethod;
 
 import java.security.InvalidParameterException;
 
-public class Fridge extends StoragePlace{
+public class Fridge extends StoragePlace implements TemperatureChangable {
     private Double fridgeTemperatureInCelsius;
+    private static final Double MAXTEMP = 8.0;
+    private static final Double MINTEMP = 0.0;
 
     public Fridge() {
         super();
@@ -16,11 +19,7 @@ public class Fridge extends StoragePlace{
 
     public Fridge(String name, Category category, Double temperatureInCelcius) throws InvalidParameterException {
         super(name, category);
-        if(temperatureInCelcius < 0 || temperatureInCelcius > 8){
-            throw new InvalidParameterException("temperatureInCelcius must be between 0 and 8");
-        } else {
-            this.fridgeTemperatureInCelsius = temperatureInCelcius;
-        }
+        changeTemperature(temperatureInCelcius);
         storageMethod = StorageMethod.FRIDGE;
     }
 
@@ -28,11 +27,16 @@ public class Fridge extends StoragePlace{
         return fridgeTemperatureInCelsius;
     }
 
-    public void setFridgeTemperatureInCelsius(Double fridgeTemperatureInCelsius) {
-        if(fridgeTemperatureInCelsius < 0 || fridgeTemperatureInCelsius > 8){
-            throw new InvalidParameterException("temperatureInCelcius must be between 0 and 8");
-        } else {
-            this.fridgeTemperatureInCelsius = fridgeTemperatureInCelsius;
-        }
+    private void setFridgeTemperatureInCelsius(Double fridgeTemperatureInCelsius) {
+        this.fridgeTemperatureInCelsius = fridgeTemperatureInCelsius;
     }
+
+    @Override
+    public void changeTemperature(Double temperature) {
+        if(temperature < Fridge.MINTEMP || temperature > Fridge.MAXTEMP){
+            throw new InvalidParameterException("temperatureInCelcius must be between min and max temperature");
+        }
+        this.setFridgeTemperatureInCelsius(temperature);
+    }
+
 }

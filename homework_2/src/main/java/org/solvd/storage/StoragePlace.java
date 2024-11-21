@@ -1,16 +1,19 @@
 package org.solvd.storage;
 
+import org.solvd.Localizable;
+import org.solvd.StoragePlaceSummarizable;
 import org.solvd.product.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class StoragePlace {
+public abstract class StoragePlace implements Localizable, StoragePlaceSummarizable {
     protected String name;
     protected Category category;
     protected List<Product> products;
     protected StorageMethod storageMethod;
+    protected String location;
 
     public StoragePlace() {
         products = new ArrayList<Product>();
@@ -20,6 +23,7 @@ public abstract class StoragePlace {
         this.name = name;
         this.category = category;
         products = new ArrayList<Product>();
+        this.location = null;
     }
 
     public void addProduct(Product product) {
@@ -68,12 +72,6 @@ public abstract class StoragePlace {
         return products;
     }
 
-    public void printProducts() {
-        for (Product product : products) {
-            System.out.println(product.toString() + "\n");
-        }
-    }
-
     @Override
     public String toString() {
         return "StoragePlace{" +
@@ -101,5 +99,24 @@ public abstract class StoragePlace {
     @Override
     public int hashCode() {
         return name.hashCode() + category.hashCode() + products.hashCode() + storageMethod.hashCode();
+    }
+
+    @Override
+    public String printLocation(){
+        return this.getClass().getSimpleName() + " " + this.name + " Location: " + location;
+    }
+
+    @Override
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @Override
+    public void summarize() {
+        System.out.printf("Summary of " + this.name +"\n");
+        for(Product product : products){
+            System.out.printf(product.toString() + "\n");
+        }
+        System.out.println("Number of products: " + products.size());
     }
 }

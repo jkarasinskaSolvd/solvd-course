@@ -19,8 +19,7 @@ public class Main {
         Shelf shelf1 = new Shelf("Shelf1",Category.BOOKS);
         supermarket.getStoragePlaceList().add(shelf1);
 
-        System.out.printf("Fridge 1 contains: " );
-        supermarket.getStoragePlaceList().getFirst().printProducts();
+        supermarket.summarize();
 
         //add cashier to supermarket
         Cashier cashier = new Cashier("Anna",1,"Warsaw","Miejska","7",
@@ -41,9 +40,7 @@ public class Main {
         Shelf shelfWarehouse = new Shelf("ShelfWarehouse",Category.BOOKS);
         supermarket.getWarehouse().getPlaces().add(shelfWarehouse);
 
-        System.out.printf("\nFridge in Warehouse contains: " );
-        supermarket.getWarehouse().getPlaces().getFirst().printProducts();
-
+        supermarket.getWarehouse().summarize();
 
         //creating products for storage
         Product milk = new Product("milk", 1, "bottle of milk",
@@ -66,17 +63,14 @@ public class Main {
         supermarket.getWarehouse().getPlaces().get(0).addProduct(cheese);
         supermarket.getWarehouse().getPlaces().get(0).addProduct(yoghurt);
 
-        System.out.printf("\nAfter adding products Fridge in Warehouse contains: " );
-        supermarket.getWarehouse().getPlaces().getFirst().printProducts();
+        supermarket.getWarehouse().summarize();
 
         //moving products to supermarket fridge
         supermarket.getWarehouse().unpackStoragePlace(supermarket.getWarehouse().getPlaces().get(0),
                 supermarket.getStoragePlaceList().get(0));
 
-        System.out.printf("\nAfter moving products from warehouse fridge 1 contains: " );
-        supermarket.getStoragePlaceList().getFirst().printProducts();
-        System.out.printf("\nFridge in Warehouse contains: " );
-        supermarket.getWarehouse().getPlaces().getFirst().printProducts();
+        System.out.printf("\nAfter moving products from warehouse: \n\n" );
+        supermarket.summarize();
 
         //creating shopping cart and adding products
         ShoppingCart cart= new ShoppingCart();
@@ -90,8 +84,8 @@ public class Main {
 
         transaction.finishTransaction(supermarket.getStoragePlaceList());
 
-        System.out.printf("\nAfter finishing transaction fridge 1 contains: " );
-        supermarket.getStoragePlaceList().getFirst().printProducts();
+        System.out.printf("\nAfter finishing transaction: \n\n" );
+        supermarket.summarize();
 
     }
 }
