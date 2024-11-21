@@ -1,23 +1,32 @@
 package org.solvd.storage;
 
-import org.solvd.StoragePlaceSummarizable;
+import org.solvd.Localizable;
+import org.solvd.Summarizable;
 import org.solvd.transaction.Cashier;
 import org.solvd.transaction.Register;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Supermarket implements StoragePlaceSummarizable {
+public class Supermarket implements Summarizable {
+    private static String brandName;
     private String name;
     private String city;
     private String street;
     private String streetNumber;
     private Warehouse warehouse;
+    private static int numberOfSupermarkets = 0;
+    private final int supermarketId = ++numberOfSupermarkets;
     private List<StoragePlace> storagePlaceList;
     private List<Register> registerList;
     private List<Cashier> cashierList;
 
+    static{
+        brandName = "Supermarket";
+    }
+
     public Supermarket() {
+        numberOfSupermarkets++;
         storagePlaceList = new ArrayList<StoragePlace>();
         registerList = new ArrayList<Register>();
         cashierList = new ArrayList<Cashier>();
@@ -32,6 +41,15 @@ public class Supermarket implements StoragePlaceSummarizable {
         storagePlaceList = new ArrayList<StoragePlace>();
         registerList = new ArrayList<Register>();
         cashierList = new ArrayList<Cashier>();
+        numberOfSupermarkets++;
+    }
+
+    public static String getBrandName() {
+        return brandName;
+    }
+
+    public static void setBrandName(String brandName) {
+        Supermarket.brandName = brandName;
     }
 
     public String getName() {
@@ -98,9 +116,25 @@ public class Supermarket implements StoragePlaceSummarizable {
         this.cashierList = cashierList;
     }
 
+    public static int getNumberOfSupermarkets() {
+        return numberOfSupermarkets;
+    }
+
+    public int getSupermarketId() {
+        return supermarketId;
+    }
+
     @Override
     public void summarize() {
-        System.out.printf("Summary of: " + this.name + "\n\n" + "Storage Places: \n");
+        List<Localizable> locationList = new ArrayList<>();
+        locationList.addAll(storagePlaceList);
+        locationList.addAll(registerList);
+        System.out.printf("Summary of: " + this.name + "\n\n" + "Locations: \n");
+        for(Localizable loc : locationList){
+            System.out.printf(loc.returnLocation());
+        }
+
+        System.out.printf("\nStorage Places: \n");
         for(StoragePlace storagePlace : storagePlaceList) {
             storagePlace.summarize();
         }

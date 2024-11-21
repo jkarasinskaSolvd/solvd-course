@@ -13,19 +13,19 @@ public abstract class Register implements Localizable {
 
     public Register() {
         transactionList = new ArrayList<Transaction>();
-        paymentMethodList = new ArrayList();
+        paymentMethodList = new ArrayList<>();
     }
 
     public Register(Integer id) {
         this.id = id;
         transactionList = new ArrayList<Transaction>();
-        paymentMethodList = new ArrayList();
+        paymentMethodList = new ArrayList<>();
         this.location = null;
     }
 
     @Override
-    public String printLocation(){
-        return this.getClass().getSimpleName() + " id: " + this.id + " Location: " + location;
+    public String returnLocation(){
+        return this.getClass().getSimpleName() + " id: " + this.id + " Location: " + location + "\n";
     }
 
     @Override

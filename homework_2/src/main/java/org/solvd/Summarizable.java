@@ -1,5 +1,5 @@
 package org.solvd;
 
-public interface StoragePlaceSummarizable {
+public interface Summarizable {
     public void summarize();
 }

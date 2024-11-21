@@ -1,14 +1,14 @@
 package org.solvd.storage;
 
 import org.solvd.Localizable;
-import org.solvd.StoragePlaceSummarizable;
+import org.solvd.Summarizable;
 import org.solvd.product.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class StoragePlace implements Localizable, StoragePlaceSummarizable {
+public abstract class StoragePlace implements Localizable, Summarizable {
     protected String name;
     protected Category category;
     protected List<Product> products;
@@ -89,7 +89,7 @@ public abstract class StoragePlace implements Localizable, StoragePlaceSummariza
         if(getClass() != o.getClass()) return false;
         if(hashCode() != o.hashCode()) return false;
         StoragePlace storagePlace = (StoragePlace) o;
-        if(this.name != storagePlace.name) return false;
+        if(!Objects.equals(this.name, storagePlace.name)) return false;
         if(this.category != storagePlace.category) return false;
         if(this.products != storagePlace.products) return false;
         if(this.storageMethod != storagePlace.storageMethod) return false;
@@ -102,8 +102,8 @@ public abstract class StoragePlace implements Localizable, StoragePlaceSummariza
     }
 
     @Override
-    public String printLocation(){
-        return this.getClass().getSimpleName() + " " + this.name + " Location: " + location;
+    public String returnLocation(){
+        return this.getClass().getSimpleName() + " " + this.name + " Location: " + location + "\n";
     }
 
     @Override

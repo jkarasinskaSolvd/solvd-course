@@ -6,7 +6,7 @@ import org.solvd.storage.StoragePlace;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Transaction {
+public final class Transaction {
     private Register register;
     private ShoppingCart cart;
     private PaymentMethod paymentMethod;

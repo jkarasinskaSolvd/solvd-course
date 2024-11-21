@@ -11,12 +11,17 @@ public class Main {
     public static void main(String[] args) {
         Supermarket supermarket = new Supermarket("Polmart","Warsaw","Zlota","13",new Warehouse());
 
+        System.out.printf("Supermarket id: "+ supermarket.getSupermarketId()+ "\n");
+
         //creating storage places in supermarket
         Fridge fridge1 = new Fridge("Fridge1", Category.DIARY,5.0);
+        fridge1.setLocation("1. row, 1. on the left side.");
         supermarket.getStoragePlaceList().add(fridge1);
         Refrigerator refrigerator1 = new Refrigerator("Refrigerator1", Category.MEAT,-20.0);
+        refrigerator1.setLocation("1. row, 2. on the left side ");
         supermarket.getStoragePlaceList().add(refrigerator1);
         Shelf shelf1 = new Shelf("Shelf1",Category.BOOKS);
+        shelf1.setLocation("1. row, 1. on the right side ");
         supermarket.getStoragePlaceList().add(shelf1);
 
         supermarket.summarize();
@@ -28,8 +33,11 @@ public class Main {
 
         //creating registers in supermarket
         Register register1 = new ContactlessRegister(1);
+        register1.setLocation("1. register on the left side ");
         supermarket.getRegisterList().add(register1);
         Register register2 = new PhysicalRegister(2,cashier);
+        register2.setLocation("1. register on the right side ");
+        supermarket.getRegisterList().add(register2);
 
         //creating storage places in supermarket's warehouse
         Fridge fridgeWarehouse = new Fridge("FridgeWarehouse", Category.DIARY,5.0);
@@ -80,7 +88,7 @@ public class Main {
 
         //transaction
         Transaction transaction = new Transaction(register1,cart,PaymentMethod.CARD,
-                LocalDateTime.of(2024,11,12,11,00));
+                LocalDateTime.of(2024,11,12,11,0));
 
         transaction.finishTransaction(supermarket.getStoragePlaceList());
 

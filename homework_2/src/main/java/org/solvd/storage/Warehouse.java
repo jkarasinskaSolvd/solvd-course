@@ -1,11 +1,11 @@
 package org.solvd.storage;
 
-import org.solvd.StoragePlaceSummarizable;
+import org.solvd.Summarizable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse implements StoragePlaceSummarizable {
+public class Warehouse implements Summarizable {
     private List<StoragePlace> places;
 
     public Warehouse() {

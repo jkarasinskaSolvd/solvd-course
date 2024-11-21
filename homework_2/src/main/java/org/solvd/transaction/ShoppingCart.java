@@ -32,7 +32,7 @@ public class ShoppingCart {
         products.remove(product);
     }
 
-    public Double totalPrice() {
+    public final Double totalPrice() {
         Double total = 0.0;
         for (Product product : products) {
             total += product.getType().calculatePrice();

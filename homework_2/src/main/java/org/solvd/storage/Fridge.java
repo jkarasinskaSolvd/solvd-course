@@ -1,15 +1,15 @@
 package org.solvd.storage;
 
-import org.solvd.TemperatureChangable;
+import org.solvd.IChangeTemperature;
 import org.solvd.product.Category;
 import org.solvd.product.StorageMethod;
 
 import java.security.InvalidParameterException;
 
-public class Fridge extends StoragePlace implements TemperatureChangable {
+public class Fridge extends StoragePlace implements IChangeTemperature {
     private Double fridgeTemperatureInCelsius;
-    private static final Double MAXTEMP = 8.0;
-    private static final Double MINTEMP = 0.0;
+    private static Double MAXTEMP = 8.0;
+    private static Double MINTEMP = 0.0;
 
     public Fridge() {
         super();
@@ -25,6 +25,22 @@ public class Fridge extends StoragePlace implements TemperatureChangable {
 
     public Double getFridgeTemperatureInCelsius() {
         return fridgeTemperatureInCelsius;
+    }
+
+    public static Double getMAXTEMP() {
+        return MAXTEMP;
+    }
+
+    public static void setMAXTEMP(Double MAXTEMP) {
+        Fridge.MAXTEMP = MAXTEMP;
+    }
+
+    public static Double getMINTEMP() {
+        return MINTEMP;
+    }
+
+    public static void setMINTEMP(Double MINTEMP) {
+        Fridge.MINTEMP = MINTEMP;
     }
 
     private void setFridgeTemperatureInCelsius(Double fridgeTemperatureInCelsius) {
