@@ -2,6 +2,9 @@ package org.solvd.storage;
 
 import org.solvd.Localizable;
 import org.solvd.Summarizable;
+import org.solvd.exception.InvalidAmountException;
+import org.solvd.exception.InvalidCategoryException;
+import org.solvd.exception.InvalidStorageMethodException;
 import org.solvd.product.*;
 
 import java.util.ArrayList;
@@ -26,10 +29,14 @@ public abstract class StoragePlace implements Localizable, Summarizable {
         this.location = null;
     }
 
-    public void addProduct(Product product) {
-        if (category == product.getCategory() && storageMethod == product.getStorageMethod()) {
-            products.add(product);
+    public void addProduct(Product product) throws InvalidCategoryException, InvalidStorageMethodException{
+        if (category != product.getCategory()){
+            throw new InvalidCategoryException(product.getName(), product.getCategory(), category);
         }
+        if(storageMethod == product.getStorageMethod()) {
+            throw new InvalidStorageMethodException(product.getName(), product.getStorageMethod(),storageMethod);
+        }
+        products.add(product);
     }
 
     public void addListOfProducts(List<Product> listOfProducts) {
@@ -38,7 +45,7 @@ public abstract class StoragePlace implements Localizable, Summarizable {
         }
     }
 // remove product but partially
-    public void removeProduct(Product product) {
+    public void removeProduct(Product product) throws InvalidAmountException{
         products.stream()
                 .filter(product1 -> product1.equals(product))
                 .findFirst()
@@ -48,8 +55,10 @@ public abstract class StoragePlace implements Localizable, Summarizable {
                         WeightedProduct weightedProduct = (WeightedProduct) product.getType();
                         Double weightLeft = weightedProduct1.getWeightInKilograms()
                                             - weightedProduct.getWeightInKilograms();
-                        if(weightLeft <= 0){
+                        if(weightLeft == 0){
                             products.remove(product);
+                        }if(weightLeft < 0){
+                            throw new InvalidAmountException(product.getName());
                         }else{
                             weightedProduct1.setWeightInKilograms(weightLeft);
                             product1.setType(weightedProduct1);
@@ -58,8 +67,10 @@ public abstract class StoragePlace implements Localizable, Summarizable {
                         SingleProduct singleProduct1 = (SingleProduct) product1.getType();
                         SingleProduct singleProduct = (SingleProduct) product.getType();
                         Integer itemsLeft = singleProduct1.getAmount() - singleProduct.getAmount();
-                        if(itemsLeft <= 0){
+                        if(itemsLeft == 0){
                             products.remove(product);
+                        }if(itemsLeft < 0){
+                            throw new InvalidAmountException(product.getName());
                         }else{
                             singleProduct1.setAmount(itemsLeft);
                             product1.setType(singleProduct1);

@@ -1,10 +1,10 @@
 package org.solvd.storage;
 
 import org.solvd.IChangeTemperature;
+import org.solvd.exception.InvalidTemperatureException;
+import org.solvd.exception.ObjectCreationFailureException;
 import org.solvd.product.Category;
 import org.solvd.product.StorageMethod;
-
-import java.security.InvalidParameterException;
 
 public class Refrigerator extends StoragePlace implements IChangeTemperature {
     private Double refrigeratorTemperatureInCelsius;
@@ -17,9 +17,14 @@ public class Refrigerator extends StoragePlace implements IChangeTemperature {
         storageMethod = StorageMethod.REFRIGERATOR;
     }
 
-    public Refrigerator(String name, Category category, Double temperatureInCelcius) throws InvalidParameterException {
+    public Refrigerator(String name, Category category, Double temperatureInCelcius)
+            throws ObjectCreationFailureException {
         super(name, category);
-        changeTemperature(temperatureInCelcius);
+        try{
+            changeTemperature(temperatureInCelcius);
+        }catch (InvalidTemperatureException e){
+            throw new ObjectCreationFailureException(e.getMessage());
+        }
         storageMethod = StorageMethod.REFRIGERATOR;
     }
 
@@ -48,9 +53,9 @@ public class Refrigerator extends StoragePlace implements IChangeTemperature {
     }
 
     @Override
-    public void changeTemperature(Double temperature) throws InvalidParameterException {
+    public void changeTemperature(Double temperature) throws InvalidTemperatureException {
         if(temperature < Refrigerator.MINTEMP || temperature > Refrigerator.MAXTEMP){
-            throw new InvalidParameterException("temperatureInCelcius must be between min and max temperature");
+            throw new InvalidTemperatureException();
         }
         this.setRefrigeratorTemperatureInCelsius(temperature);
     }

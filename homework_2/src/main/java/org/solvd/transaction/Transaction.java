@@ -1,5 +1,7 @@
 package org.solvd.transaction;
 
+import org.solvd.exception.InvalidPaymentMethodException;
+import org.solvd.exception.ObjectCreationFailureException;
 import org.solvd.product.Product;
 import org.solvd.storage.StoragePlace;
 
@@ -16,9 +18,17 @@ public final class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Register register, ShoppingCart cart, PaymentMethod paymentMethod, LocalDateTime date) {
+    public Transaction(Register register, ShoppingCart cart, PaymentMethod paymentMethod, LocalDateTime date)
+            throws ObjectCreationFailureException {
         this.register = register;
         this.cart = cart;
+        try{
+            if(this.register instanceof ContactlessRegister && paymentMethod == PaymentMethod.CASH){
+                throw new InvalidPaymentMethodException();
+            }
+        }catch(InvalidPaymentMethodException e){
+            throw new ObjectCreationFailureException(e.getMessage());
+        }
         this.paymentMethod = paymentMethod;
         value = 0.0;
         this.date = date;
