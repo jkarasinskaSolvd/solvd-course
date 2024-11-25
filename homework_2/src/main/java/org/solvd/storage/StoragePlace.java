@@ -33,7 +33,7 @@ public abstract class StoragePlace implements Localizable, Summarizable {
         if (category != product.getCategory()){
             throw new InvalidCategoryException(product.getName(), product.getCategory(), category);
         }
-        if(storageMethod == product.getStorageMethod()) {
+        if(storageMethod != product.getStorageMethod()) {
             throw new InvalidStorageMethodException(product.getName(), product.getStorageMethod(),storageMethod);
         }
         products.add(product);

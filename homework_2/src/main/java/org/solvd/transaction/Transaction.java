@@ -1,11 +1,16 @@
 package org.solvd.transaction;
 
+import org.solvd.exception.FileSaveFailureException;
 import org.solvd.exception.InvalidPaymentMethodException;
 import org.solvd.exception.ObjectCreationFailureException;
 import org.solvd.product.Product;
 import org.solvd.storage.StoragePlace;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public final class Transaction {
@@ -88,12 +93,26 @@ public final class Transaction {
         }
     }
 
-    public void finishTransaction(List<StoragePlace> storagePlaceList){
+    public void finishTransaction(List<StoragePlace> storagePlaceList) throws FileSaveFailureException{
         value = cart.totalPrice();
         printReceipt();
         System.out.printf("\nTransaction finished. Total price: $%.2f\n", value);
         removeFromStock(storagePlaceList);
+        saveReceiptToFile();
     }
 
+    public void saveReceiptToFile() throws FileSaveFailureException {
+        try(BufferedWriter myWriter = new BufferedWriter(new FileWriter
+                ("receipt"+date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+".txt"))){
+            myWriter.write("Receipt: \n\n");
+            for (Product product : cart.getProducts()) {
+                myWriter.write(product.toString() + "\n");
+            }
+            myWriter.write("\nTotal price: " + cart.totalPrice());
+            myWriter.flush();
+        } catch (IOException e) {
+            throw new FileSaveFailureException();
+        }
+    }
 
 }

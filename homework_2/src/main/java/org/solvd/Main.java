@@ -1,5 +1,7 @@
 package org.solvd;
 
+import org.solvd.exception.FileSaveFailureException;
+import org.solvd.exception.ObjectCreationFailureException;
 import org.solvd.product.*;
 import org.solvd.storage.*;
 import org.solvd.transaction.*;
@@ -14,12 +16,26 @@ public class Main {
         System.out.printf("Supermarket id: "+ supermarket.getSupermarketId()+ "\n");
 
         //creating storage places in supermarket
-        Fridge fridge1 = new Fridge("Fridge1", Category.DIARY,5.0);
-        fridge1.setLocation("1. row, 1. on the left side.");
-        supermarket.getStoragePlaceList().add(fridge1);
-        Refrigerator refrigerator1 = new Refrigerator("Refrigerator1", Category.MEAT,-20.0);
-        refrigerator1.setLocation("1. row, 2. on the left side ");
-        supermarket.getStoragePlaceList().add(refrigerator1);
+        Fridge fridge1;
+
+        try {
+            fridge1 = new Fridge("Fridge1", Category.DIARY,5.0);
+            fridge1.setLocation("1. row, 1. on the left side.");
+            supermarket.getStoragePlaceList().add(fridge1);
+        } catch (ObjectCreationFailureException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Refrigerator refrigerator1;
+
+        try {
+            refrigerator1 = new Refrigerator("Refrigerator1", Category.MEAT,-20.0);
+            refrigerator1.setLocation("1. row, 2. on the left side ");
+            supermarket.getStoragePlaceList().add(refrigerator1);
+        } catch (ObjectCreationFailureException e) {
+            System.out.println(e.getMessage());
+        }
+
         Shelf shelf1 = new Shelf("Shelf1",Category.BOOKS);
         shelf1.setLocation("1. row, 1. on the right side ");
         supermarket.getStoragePlaceList().add(shelf1);
@@ -40,11 +56,25 @@ public class Main {
         supermarket.getRegisterList().add(register2);
 
         //creating storage places in supermarket's warehouse
-        Fridge fridgeWarehouse = new Fridge("FridgeWarehouse", Category.DIARY,5.0);
-        supermarket.getWarehouse().getPlaces().add(fridgeWarehouse);
-        Refrigerator refrigeratorWarehouse = new Refrigerator("RefrigeratorWarehouse", Category.MEAT,
-                -20.0);
-        supermarket.getWarehouse().getPlaces().add(refrigeratorWarehouse);
+        Fridge fridgeWarehouse;
+
+        try {
+            fridgeWarehouse = new Fridge("FridgeWarehouse", Category.DIARY,5.0);
+            supermarket.getWarehouse().getPlaces().add(fridgeWarehouse);
+        } catch (ObjectCreationFailureException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Refrigerator refrigeratorWarehouse;
+
+        try {
+            refrigeratorWarehouse = new Refrigerator("RefrigeratorWarehouse", Category.MEAT,
+                    -20.0);
+            supermarket.getWarehouse().getPlaces().add(refrigeratorWarehouse);
+        } catch (ObjectCreationFailureException e) {
+            System.out.println(e.getMessage());
+        }
+
         Shelf shelfWarehouse = new Shelf("ShelfWarehouse",Category.BOOKS);
         supermarket.getWarehouse().getPlaces().add(shelfWarehouse);
 
@@ -67,17 +97,17 @@ public class Main {
                 new SingleProduct(0.50,7), StorageMethod.FRIDGE, Category.DIARY);
 
         //adding products to warehouse
-        supermarket.getWarehouse().getPlaces().get(0).addProduct(milk);
-        supermarket.getWarehouse().getPlaces().get(0).addProduct(cheese);
-        supermarket.getWarehouse().getPlaces().get(0).addProduct(yoghurt);
+        supermarket.getWarehouse().getPlaces().getFirst().addProduct(milk);
+        supermarket.getWarehouse().getPlaces().getFirst().addProduct(cheese);
+        supermarket.getWarehouse().getPlaces().getFirst().addProduct(yoghurt);
 
         supermarket.getWarehouse().summarize();
 
         //moving products to supermarket fridge
-        supermarket.getWarehouse().unpackStoragePlace(supermarket.getWarehouse().getPlaces().get(0),
-                supermarket.getStoragePlaceList().get(0));
+        supermarket.getWarehouse().unpackStoragePlace(supermarket.getWarehouse().getPlaces().getFirst(),
+                supermarket.getStoragePlaceList().getFirst());
 
-        System.out.printf("\nAfter moving products from warehouse: \n\n" );
+        System.out.print("\nAfter moving products from warehouse: \n\n" );
         supermarket.summarize();
 
         //creating shopping cart and adding products
@@ -87,12 +117,23 @@ public class Main {
         cart.addProduct(yoghurt2);
 
         //transaction
-        Transaction transaction = new Transaction(register1,cart,PaymentMethod.CARD,
-                LocalDateTime.of(2024,11,12,11,0));
+        Transaction transaction = null;
+        try {
+            transaction = new Transaction(register1,cart, PaymentMethod.CARD,
+                    LocalDateTime.of(2024,11,12,11,0));
+        } catch (ObjectCreationFailureException e) {
+            System.out.println(e.getMessage());
+        }
 
-        transaction.finishTransaction(supermarket.getStoragePlaceList());
+        try{
+            assert transaction != null;
+            transaction.finishTransaction(supermarket.getStoragePlaceList());
 
-        System.out.printf("\nAfter finishing transaction: \n\n" );
+        }catch (FileSaveFailureException e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.print("\nAfter finishing transaction: \n\n" );
         supermarket.summarize();
 
     }
