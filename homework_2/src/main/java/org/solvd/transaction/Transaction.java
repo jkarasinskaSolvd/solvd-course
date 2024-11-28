@@ -3,7 +3,6 @@ package org.solvd.transaction;
 import org.solvd.exception.FileSaveFailureException;
 import org.solvd.exception.InvalidPaymentMethodException;
 import org.solvd.exception.ObjectCreationFailureException;
-import org.solvd.product.Product;
 import org.solvd.storage.StoragePlace;
 
 import java.io.BufferedWriter;
@@ -86,9 +85,9 @@ public final class Transaction {
     }
 
     private void removeFromStock(List<StoragePlace> storagePlaceList){
-        for(Product product : cart.getProducts()){
+        for(int i = 0; i<cart.getProducts().size(); i++){
             for(StoragePlace storagePlace : storagePlaceList){
-                storagePlace.removeProduct(product);
+                storagePlace.removeProduct(cart.getProducts().get(i));
             }
         }
     }
@@ -105,8 +104,8 @@ public final class Transaction {
         try(BufferedWriter myWriter = new BufferedWriter(new FileWriter
                 ("receipt"+date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+".txt"))){
             myWriter.write("Receipt: \n\n");
-            for (Product product : cart.getProducts()) {
-                myWriter.write(product.toString() + "\n");
+            for (int i = 0; i<cart.getProducts().size(); i++) {
+                myWriter.write(cart.getProducts().get(i).toString() + "\n");
             }
             myWriter.write("\nTotal price: " + cart.totalPrice());
             myWriter.flush();

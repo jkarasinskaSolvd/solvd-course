@@ -120,7 +120,7 @@ public class Main {
         Transaction transaction = null;
         try {
             transaction = new Transaction(register1,cart, PaymentMethod.CARD,
-                    LocalDateTime.of(2024,11,12,11,0));
+                    LocalDateTime.now());
         } catch (ObjectCreationFailureException e) {
             System.out.println(e.getMessage());
         }

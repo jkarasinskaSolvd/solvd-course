@@ -1,26 +1,24 @@
 package org.solvd.transaction;
 
+import org.solvd.CustomLinkedList;
 import org.solvd.product.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShoppingCart {
-    private List<Product> products;
+    private CustomLinkedList<Product> products;
 
     public ShoppingCart() {
-        products = new ArrayList<Product>(); //ArrayList is implementation of List interface
+        products = new CustomLinkedList<>(); //ArrayList is implementation of List interface
     }
 
-    public ShoppingCart(List<Product> products) {
+    public ShoppingCart(CustomLinkedList<Product> products) {
         this.products = products;
     }
 
-    public List<Product> getProducts() {
+    public CustomLinkedList<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(CustomLinkedList<Product> products) {
         this.products = products;
     }
 
@@ -34,15 +32,15 @@ public class ShoppingCart {
 
     public final Double totalPrice() {
         Double total = 0.0;
-        for (Product product : products) {
-            total += product.getType().calculatePrice();
+        for (int i = 0; i < products.size(); i++) {
+            total += products.get(i).getType().calculatePrice();
         }
         return total;
     }
 
     public void printProducts() {
-        for (Product product : products) {
-            System.out.println(product.toString() + "\n");
+        for (int i = 0; i < products.size(); i++) {
+            System.out.println(products.get(i).toString() + "\n");
         }
     }
 }
