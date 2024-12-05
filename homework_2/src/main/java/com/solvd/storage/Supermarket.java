@@ -1,16 +1,13 @@
 package com.solvd.storage;
 
-import com.solvd.Adressable;
-import com.solvd.Cleanable;
-import com.solvd.Localizable;
-import com.solvd.Summarizable;
+import com.solvd.*;
 import com.solvd.transaction.Cashier;
 import com.solvd.transaction.Register;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Supermarket implements Summarizable, Adressable, Cleanable {
+public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyable {
     private static String brandName;
     private String name;
     private String city;
@@ -166,5 +163,14 @@ public class Supermarket implements Summarizable, Adressable, Cleanable {
         }else {
             System.out.println("Supermarket is clean, do something else");
         }
+    }
+
+    @Override
+    public void empty() {
+        warehouse.empty();
+        for(StoragePlace place : storagePlaceList){
+            place.empty();
+        }
+        System.out.println("Supermarket " + name + " is empty");
     }
 }

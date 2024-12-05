@@ -1,6 +1,7 @@
 package com.solvd.storage;
 
 import com.solvd.Cleanable;
+import com.solvd.Emptyable;
 import com.solvd.Localizable;
 import com.solvd.Summarizable;
 import com.solvd.exception.InvalidAmountException;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class StoragePlace implements Localizable, Summarizable, Cleanable {
+public abstract class StoragePlace implements Localizable, Summarizable, Cleanable, Emptyable {
     protected String name;
     protected Category category;
     protected List<Product> products;
@@ -142,5 +143,11 @@ public abstract class StoragePlace implements Localizable, Summarizable, Cleanab
         }else {
             System.out.println("This place is clean, do something else");
         }
+    }
+
+    @Override
+    public void empty() {
+        products.clear();
+        System.out.println("Storage Place: " + name + " emptied");
     }
 }

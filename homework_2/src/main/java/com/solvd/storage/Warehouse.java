@@ -1,13 +1,14 @@
 package com.solvd.storage;
 
 import com.solvd.Cleanable;
+import com.solvd.Emptyable;
 import com.solvd.Summarizable;
 import com.solvd.transaction.Cashier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse implements Summarizable, Cleanable {
+public class Warehouse implements Summarizable, Cleanable, Emptyable {
     private List<StoragePlace> places;
     private Boolean isClean;
 
@@ -57,5 +58,13 @@ public class Warehouse implements Summarizable, Cleanable {
         }else {
             System.out.println("Warehouse is clean, do something else");
         }
+    }
+
+    @Override
+    public void empty() {
+        for(StoragePlace place : places){
+            place.empty();
+        }
+        System.out.println("Warehouse empty");
     }
 }
