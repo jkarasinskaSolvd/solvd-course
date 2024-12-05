@@ -1,5 +1,7 @@
 package com.solvd.storage;
 
+import com.solvd.Adressable;
+import com.solvd.Cleanable;
 import com.solvd.Localizable;
 import com.solvd.Summarizable;
 import com.solvd.transaction.Cashier;
@@ -8,7 +10,7 @@ import com.solvd.transaction.Register;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Supermarket implements Summarizable {
+public class Supermarket implements Summarizable, Adressable, Cleanable {
     private static String brandName;
     private String name;
     private String city;
@@ -20,6 +22,7 @@ public class Supermarket implements Summarizable {
     private List<StoragePlace> storagePlaceList;
     private List<Register> registerList;
     private List<Cashier> cashierList;
+    private Boolean isClean = false;
 
     static{
         brandName = "Supermarket";
@@ -116,6 +119,14 @@ public class Supermarket implements Summarizable {
         this.cashierList = cashierList;
     }
 
+    public Boolean getClean() {
+        return isClean;
+    }
+
+    public void setClean(Boolean clean) {
+        isClean = clean;
+    }
+
     public static int getNumberOfSupermarkets() {
         return numberOfSupermarkets;
     }
@@ -140,5 +151,20 @@ public class Supermarket implements Summarizable {
         }
         warehouse.summarize();
         System.out.print("End of summary\n\n");
+    }
+
+    @Override
+    public String printAddress() {
+        return "city: " + city + ", street: " + street + ", streetNumber: " + streetNumber;
+    }
+
+    @Override
+    public void clean(Cashier cashier) {
+        if(!isClean){
+            isClean = true;
+            System.out.println("Supermarket cleaned by: " + cashier.getCashierId());
+        }else {
+            System.out.println("Supermarket is clean, do something else");
+        }
     }
 }

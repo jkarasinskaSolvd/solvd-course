@@ -1,11 +1,7 @@
 package com.solvd.transaction;
 
-public class Cashier {
-    private String cashierName;
+public class Cashier extends Person{
     private Integer cashierId;
-    private String city;
-    private String street;
-    private String streetNumber;
     private Double salary;
     private String bankAccount;
 
@@ -14,21 +10,18 @@ public class Cashier {
 
     public Cashier(String cashierName, Integer cashierId, String city, String street, String streetNumber,
                    Double salary, String bankAccount) {
-        this.cashierName = cashierName;
+        super(cashierName, city, street, streetNumber);
         this.cashierId = cashierId;
-        this.city = city;
-        this.street = street;
-        this.streetNumber = streetNumber;
         this.salary = salary;
         this.bankAccount = bankAccount;
     }
 
     public String getCashierName() {
-        return cashierName;
+        return name;
     }
 
     public void setCashierName(String cashierName) {
-        this.cashierName = cashierName;
+        this.name = cashierName;
     }
 
     public Integer getCashierId() {

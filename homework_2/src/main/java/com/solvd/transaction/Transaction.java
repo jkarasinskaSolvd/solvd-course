@@ -18,6 +18,7 @@ public final class Transaction {
     private PaymentMethod paymentMethod;
     private Double value;
     private LocalDateTime date;
+    private Client client;
 
     public Transaction() {
     }
@@ -78,10 +79,21 @@ public final class Transaction {
         this.date = date;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     private void printReceipt(){
         System.out.print("\n\nReceipt: \n\n");
         cart.printProducts();
         System.out.printf("Total price: " + cart.totalPrice());
+        if(client!=null){
+            System.out.println("Client loyalty card number: " + client.getLoyaltyCardNumber());
+        }
     }
 
     private void removeFromStock(List<StoragePlace> storagePlaceList){

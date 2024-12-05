@@ -17,20 +17,20 @@ public class Main {
         System.out.printf("Supermarket id: "+ supermarket.getSupermarketId()+ "\n");
 
         //creating storage places in supermarket
-        Fridge fridge1;
+        CoolingUnit fridge1;
 
         try {
-            fridge1 = new Fridge("Fridge1", Category.DIARY,5.0);
+            fridge1 = new CoolingUnit("Fridge1", Category.DIARY,5.0);
             fridge1.setLocation("1. row, 1. on the left side.");
             supermarket.getStoragePlaceList().add(fridge1);
         } catch (ObjectCreationFailureException e) {
             System.out.println(e.getMessage());
         }
 
-        Refrigerator refrigerator1;
+        CoolingUnit refrigerator1;
 
         try {
-            refrigerator1 = new Refrigerator("Refrigerator1", Category.MEAT,-20.0);
+            refrigerator1 = new CoolingUnit("Refrigerator1", Category.MEAT,-20.0);
             refrigerator1.setLocation("1. row, 2. on the left side ");
             supermarket.getStoragePlaceList().add(refrigerator1);
         } catch (ObjectCreationFailureException e) {
@@ -57,19 +57,19 @@ public class Main {
         supermarket.getRegisterList().add(register2);
 
         //creating storage places in supermarket's warehouse
-        Fridge fridgeWarehouse;
+        CoolingUnit fridgeWarehouse;
 
         try {
-            fridgeWarehouse = new Fridge("FridgeWarehouse", Category.DIARY,5.0);
+            fridgeWarehouse = new CoolingUnit("FridgeWarehouse", Category.DIARY,5.0);
             supermarket.getWarehouse().getPlaces().add(fridgeWarehouse);
         } catch (ObjectCreationFailureException e) {
             System.out.println(e.getMessage());
         }
 
-        Refrigerator refrigeratorWarehouse;
+        CoolingUnit refrigeratorWarehouse;
 
         try {
-            refrigeratorWarehouse = new Refrigerator("RefrigeratorWarehouse", Category.MEAT,
+            refrigeratorWarehouse = new CoolingUnit("RefrigeratorWarehouse", Category.MEAT,
                     -20.0);
             supermarket.getWarehouse().getPlaces().add(refrigeratorWarehouse);
         } catch (ObjectCreationFailureException e) {

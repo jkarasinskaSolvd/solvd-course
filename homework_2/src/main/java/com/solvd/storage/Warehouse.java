@@ -1,12 +1,15 @@
 package com.solvd.storage;
 
+import com.solvd.Cleanable;
 import com.solvd.Summarizable;
+import com.solvd.transaction.Cashier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse implements Summarizable {
+public class Warehouse implements Summarizable, Cleanable {
     private List<StoragePlace> places;
+    private Boolean isClean;
 
     public Warehouse() {
         places = new ArrayList<>();
@@ -24,6 +27,14 @@ public class Warehouse implements Summarizable {
         this.places = places;
     }
 
+    public Boolean getClean() {
+        return isClean;
+    }
+
+    public void setClean(Boolean clean) {
+        isClean = clean;
+    }
+
     public void unpackStoragePlace(StoragePlace originalPlace, StoragePlace placeOfDestination) {
         placeOfDestination.products.addAll(originalPlace.products);
         originalPlace.products.clear();
@@ -36,5 +47,15 @@ public class Warehouse implements Summarizable {
             storagePlace.summarize();
         }
         System.out.print("End of warehouse summary\n\n");
+    }
+
+    @Override
+    public void clean(Cashier cashier) {
+        if(!isClean){
+            isClean = true;
+            System.out.println("Warehouse cleaned by: " + cashier.getCashierId());
+        }else {
+            System.out.println("Warehouse is clean, do something else");
+        }
     }
 }

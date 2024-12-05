@@ -1,22 +1,25 @@
 package com.solvd.storage;
 
+import com.solvd.Cleanable;
 import com.solvd.Localizable;
 import com.solvd.Summarizable;
 import com.solvd.exception.InvalidAmountException;
 import com.solvd.exception.InvalidCategoryException;
 import com.solvd.exception.InvalidStorageMethodException;
 import com.solvd.product.*;
+import com.solvd.transaction.Cashier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class StoragePlace implements Localizable, Summarizable {
+public abstract class StoragePlace implements Localizable, Summarizable, Cleanable {
     protected String name;
     protected Category category;
     protected List<Product> products;
     protected StorageMethod storageMethod;
     protected String location;
+    protected Boolean isClean;
 
     public StoragePlace() {
         products = new ArrayList<>();
@@ -129,5 +132,15 @@ public abstract class StoragePlace implements Localizable, Summarizable {
             System.out.printf(product.toString() + "\n");
         }
         System.out.println("Number of products: " + products.size());
+    }
+
+    @Override
+    public void clean(Cashier cashier) {
+        if(!isClean){
+            isClean = true;
+            System.out.println("Storage Place: " + name + " cleaned by: " + cashier.getCashierId());
+        }else {
+            System.out.println("This place is clean, do something else");
+        }
     }
 }
