@@ -5,12 +5,10 @@ public class CustomLinkedList<T> {
     private static class Node<T> {
         T data;
         Node<T> next;
-        Node<T> previous;
 
         Node(T data) {
             this.data = data;
             this.next = null;
-            this.previous = null;
         }
     }
 
@@ -57,7 +55,6 @@ public class CustomLinkedList<T> {
             tail = newNode;
         }else{
             newNode.next = head;
-            head.previous = newNode;
             head = newNode;
         }
         size++;
@@ -65,7 +62,6 @@ public class CustomLinkedList<T> {
 
     public void addLast(T data) {
         Node<T> newNode = new Node<>(data);
-        newNode.previous = tail;
         tail.next = newNode;
         tail = newNode;
 
@@ -97,8 +93,6 @@ public class CustomLinkedList<T> {
             } else {
                 newNode.next = prev.next;
                 prev.next = newNode;
-                newNode.previous = prev;
-                newNode.next.previous = newNode;
                 size++;
             }
         }
@@ -111,7 +105,6 @@ public class CustomLinkedList<T> {
         if (head == null) {
             throw new IndexOutOfBoundsException("You can't remove from empty list");
         }else{
-            next.previous = null;
             head.next = null;
             head = next;
         }
@@ -123,7 +116,6 @@ public class CustomLinkedList<T> {
         Node<T> prev = getNode(size - 2);
 
         prev.next = null;
-        tail.previous = null;
         tail = prev;
     }
 
@@ -140,9 +132,7 @@ public class CustomLinkedList<T> {
                 removeLast();
             } else {
                 prev.next = next;
-                next.previous = prev;
                 thisNode.next = null;
-                thisNode.previous = null;
                 size--;
             }
         }
