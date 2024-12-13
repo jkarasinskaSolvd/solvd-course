@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public final class Transaction {
     private Register register;
@@ -28,7 +29,10 @@ public final class Transaction {
         this.register = register;
         this.cart = cart;
         try{
-            if(this.register instanceof ContactlessRegister && paymentMethod == PaymentMethod.CASH){
+            BiPredicate<Register, PaymentMethod> correctTransaction =
+                    (registerParam, paymentMethodParam) -> registerParam instanceof ContactlessRegister
+                            && paymentMethodParam.equals(PaymentMethod.CASH);
+            if(correctTransaction.test(register,paymentMethod)){
                 throw new InvalidPaymentMethodException();
             }
         }catch(InvalidPaymentMethodException e){

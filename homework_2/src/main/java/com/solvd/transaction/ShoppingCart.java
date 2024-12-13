@@ -1,10 +1,16 @@
 package com.solvd.transaction;
 
 import com.solvd.CustomLinkedList;
+import com.solvd.exception.InvalidAmountException;
+import com.solvd.lambda.IsEqualToZero;
+import com.solvd.lambda.IsSmallerThanZero;
 import com.solvd.product.Product;
+import com.solvd.product.SingleProduct;
 
 public class ShoppingCart {
     private CustomLinkedList<Product> products;
+    private IsEqualToZero<Object> isEqualToZero;
+    private IsSmallerThanZero<Object> isSmallerThanZero;
 
     public ShoppingCart() {
         products = new CustomLinkedList<>(); //ArrayList is implementation of List interface
@@ -23,6 +29,12 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product) {
+        if(product.getType() instanceof SingleProduct){
+            if(isEqualToZero.test(((SingleProduct) product.getType()).getAmount())
+            || isSmallerThanZero.test(((SingleProduct) product.getType()).getAmount())) {
+                throw new InvalidAmountException(product.getName());
+            }
+        }
         products.add(product);
     }
 

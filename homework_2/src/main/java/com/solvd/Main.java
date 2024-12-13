@@ -1,6 +1,7 @@
 package com.solvd;
 
 import com.solvd.exception.FileSaveFailureException;
+import com.solvd.exception.InvalidAmountException;
 import com.solvd.exception.ObjectCreationFailureException;
 import com.solvd.product.*;
 import com.solvd.storage.*;
@@ -85,7 +86,7 @@ public class Main {
         Product milk = new Product("milk", 1, "bottle of milk",
                 new SingleProduct(3.0,4), StorageMethod.FRIDGE, Category.DIARY);
         Product cheese = new Product("cheese", 2, "block of cheese",
-                new WeightedProduct(5.0,2.0), StorageMethod.FRIDGE, Category.DIARY);
+                new WeightedProduct(5.0,-2.0), StorageMethod.FRIDGE, Category.DIARY);
         Product yoghurt = new Product("yoghurt", 3, "cup of yoghurt 250g",
                 new SingleProduct(0.50,7), StorageMethod.FRIDGE, Category.DIARY);
 
@@ -98,9 +99,14 @@ public class Main {
                 new SingleProduct(0.50,7), StorageMethod.FRIDGE, Category.DIARY);
 
         //adding products to warehouse
-        supermarket.getWarehouse().getPlaces().getFirst().addProduct(milk);
-        supermarket.getWarehouse().getPlaces().getFirst().addProduct(cheese);
-        supermarket.getWarehouse().getPlaces().getFirst().addProduct(yoghurt);
+        try{
+            supermarket.getWarehouse().getPlaces().getFirst().addProduct(milk);
+            supermarket.getWarehouse().getPlaces().getFirst().addProduct(cheese);
+            supermarket.getWarehouse().getPlaces().getFirst().addProduct(yoghurt);
+        }
+        catch(InvalidAmountException e){
+            System.out.println(e.getMessage());
+        }
 
         supermarket.getWarehouse().summarize();
 

@@ -7,12 +7,16 @@ import com.solvd.Summarizable;
 import com.solvd.exception.InvalidAmountException;
 import com.solvd.exception.InvalidCategoryException;
 import com.solvd.exception.InvalidStorageMethodException;
+import com.solvd.lambda.IsEqualToZero;
+import com.solvd.lambda.IsSmallerThanZero;
 import com.solvd.product.*;
 import com.solvd.transaction.Cashier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 public abstract class StoragePlace implements Localizable, Summarizable, Cleanable, Emptyable {
     protected String name;
@@ -21,6 +25,28 @@ public abstract class StoragePlace implements Localizable, Summarizable, Cleanab
     protected StorageMethod storageMethod;
     protected String location;
     protected Boolean isClean;
+    private IsSmallerThanZero<Object> isSmallerThanZero;
+    private IsEqualToZero<Object> isEqualToZero;
+    private final BiConsumer<ProductType, List<Predicate<Object>>> productValidator =
+            (productType, objectPredicateList) ->
+            {
+                switch(productType){
+                    case SingleProduct singleProduct -> {
+                        if(objectPredicateList.stream().anyMatch(objectPredicate -> objectPredicate.test(singleProduct.getAmount())))
+                        {
+                            throw new RuntimeException("Invalid product amount declared");
+                        }
+                    }
+                    case WeightedProduct weightedProduct -> {
+                        if(objectPredicateList.stream().anyMatch(objectPredicate -> objectPredicate.test(weightedProduct.getWeightInKilograms())))
+                        {
+                            throw new RuntimeException("Invalid product amount declared");
+                        }
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + productType);
+                }
+            };
+
 
     public StoragePlace() {
         products = new ArrayList<>();
@@ -34,6 +60,12 @@ public abstract class StoragePlace implements Localizable, Summarizable, Cleanab
     }
 
     public void addProduct(Product product) throws InvalidCategoryException, InvalidStorageMethodException{
+        try {
+            productValidator.accept(product.getType(), List.of(isSmallerThanZero, isEqualToZero));
+        }
+        catch(RuntimeException e){
+            throw new InvalidAmountException(e.getMessage());
+        }
         if (category != product.getCategory()){
             throw new InvalidCategoryException(product.getName(), product.getCategory(), category);
         }
@@ -59,9 +91,9 @@ public abstract class StoragePlace implements Localizable, Summarizable, Cleanab
                         WeightedProduct weightedProduct = (WeightedProduct) product.getType();
                         Double weightLeft = weightedProduct1.getWeightInKilograms()
                                             - weightedProduct.getWeightInKilograms();
-                        if(weightLeft == 0){
+                        if(isEqualToZero.test(weightLeft)){
                             products.remove(product);
-                        }if(weightLeft < 0){
+                        }if(isSmallerThanZero.test(weightLeft)){
                             throw new InvalidAmountException(product.getName());
                         }else{
                             weightedProduct1.setWeightInKilograms(weightLeft);
@@ -71,9 +103,9 @@ public abstract class StoragePlace implements Localizable, Summarizable, Cleanab
                         SingleProduct singleProduct1 = (SingleProduct) product1.getType();
                         SingleProduct singleProduct = (SingleProduct) product.getType();
                         Integer itemsLeft = singleProduct1.getAmount() - singleProduct.getAmount();
-                        if(itemsLeft == 0){
+                        if(isEqualToZero.test(itemsLeft)){
                             products.remove(product);
-                        }if(itemsLeft < 0){
+                        }if(isSmallerThanZero.test(itemsLeft)){
                             throw new InvalidAmountException(product.getName());
                         }else{
                             singleProduct1.setAmount(itemsLeft);
