@@ -1,21 +1,34 @@
 package com.solvd.transaction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Client extends Person{
-    private Integer loyaltyCardNumber;
+    private LoyaltyCard loyaltyCard;
+    private List<Transaction> transactionList;
 
     public Client() {
     }
 
-    public Client(String name, String city, String street, String streetNumber, Integer loyaltyCardNumber) {
+    public Client(String name, String city, String street, String streetNumber, LoyaltyCard loyaltyCard) {
         super(name, city, street, streetNumber);
-        this.loyaltyCardNumber = loyaltyCardNumber;
+        this.loyaltyCard = loyaltyCard;
+        this.transactionList = new ArrayList<Transaction>();
     }
 
-    public Integer getLoyaltyCardNumber() {
-        return loyaltyCardNumber;
+    public LoyaltyCard getLoyaltyCard() {
+        return loyaltyCard;
     }
 
-    public void setLoyaltyCardNumber(Integer loyaltyCardNumber) {
-        this.loyaltyCardNumber = loyaltyCardNumber;
+    public void setLoyaltyCardNumber(LoyaltyCard loyaltyCard) {
+        this.loyaltyCard = loyaltyCard;
+    }
+
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
+    public LoyaltyCardDiscountType nextCard(){
+        return loyaltyCard.getDiscountType().getNextDiscount(transactionList.size());
     }
 }

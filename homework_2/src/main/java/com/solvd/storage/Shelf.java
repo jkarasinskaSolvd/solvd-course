@@ -11,8 +11,8 @@ public class Shelf extends StoragePlace{
         storageMethod = StorageMethod.SHELF;
     }
 
-    public Shelf(String name, Category category){
-        super(name, category);
+    public Shelf(String name, Category category, StorageSize storageSize){
+        super(name, category, storageSize);
         storageMethod = StorageMethod.SHELF;
     }
 }

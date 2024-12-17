@@ -3,7 +3,7 @@ package com.solvd.product;
 
 import java.util.Objects;
 
-public class Product {
+public class Product implements Comparable<Product> {
     private String name;
     private Integer  barcode;
     private String description;
@@ -103,5 +103,10 @@ public class Product {
     public int hashCode() {
         return name.hashCode() + barcode + description.hashCode() + type.hashCode() + storageMethod.hashCode()
                 + category.hashCode();
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        return this.type.calculatePrice().compareTo(o.type.calculatePrice());
     }
 }

@@ -16,9 +16,9 @@ public class CoolingUnit extends StoragePlace {
         storageMethod = StorageMethod.FRIDGE;
     }
 
-    public CoolingUnit(String name, Category category, Double temperatureInCelcius)
+    public CoolingUnit(String name, Category category, StorageSize storageSize, Double temperatureInCelcius)
             throws ObjectCreationFailureException {
-        super(name, category);
+        super(name, category, storageSize);
         try{
             changeTemperature(temperatureInCelcius);
         }catch(InvalidTemperatureException e){

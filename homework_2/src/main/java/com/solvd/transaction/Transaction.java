@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 
 public final class Transaction {
@@ -91,13 +92,22 @@ public final class Transaction {
         this.client = client;
     }
 
-    private void printReceipt(){
-        System.out.print("\n\nReceipt: \n\n");
-        cart.printProducts();
-        System.out.printf("Total price: " + cart.totalPrice());
+    private String printReceipt(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Receipt: \n\n");
+        cart.getProducts().stream().forEach(product -> builder.append(product).append("\n"));
+        builder.append("\nTotal price: ").append(value).append("\n\n");
         if(client!=null){
-            System.out.println("Client loyalty card number: " + client.getLoyaltyCardNumber());
+            builder.append("Client loyalty card number: ").append(client.getLoyaltyCard().getLoyaltyCardId());
+            if(paymentMethod.getContactless()){
+                builder.append("Contactless transaction - well done!");
+            }
         }
+        if(paymentMethod.getTraceable()){
+            System.out.println("This transaction will be traceable");
+        }
+
+        return builder.toString();
     }
 
     private void removeFromStock(List<StoragePlace> storagePlaceList){
@@ -108,22 +118,28 @@ public final class Transaction {
         }
     }
 
+    private Double calculateTransactionValue(){
+        double currentValue =  cart.totalPrice() * paymentMethod.calculateTaxModifier();
+        if(Objects.nonNull(client)){
+            currentValue *= client.getLoyaltyCard().getDiscountType().calculateDiscountModifier();
+        }
+        return currentValue;
+    }
+
     public void finishTransaction(List<StoragePlace> storagePlaceList) throws FileSaveFailureException{
-        value = cart.totalPrice();
-        printReceipt();
+        value = calculateTransactionValue();
+        System.out.println(printReceipt());
         System.out.printf("\nTransaction finished. Total price: $%.2f\n", value);
         removeFromStock(storagePlaceList);
         saveReceiptToFile();
     }
 
     public void saveReceiptToFile() throws FileSaveFailureException {
+
         try(BufferedWriter myWriter = new BufferedWriter(new FileWriter
                 ("receipt"+date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+".txt"))){
-            myWriter.write("Receipt: \n\n");
-            for (int i = 0; i<cart.getProducts().size(); i++) {
-                myWriter.write(cart.getProducts().get(i).toString() + "\n");
-            }
-            myWriter.write("\nTotal price: " + cart.totalPrice());
+
+            myWriter.write(printReceipt());
             myWriter.flush();
         } catch (IOException e) {
             throw new FileSaveFailureException();

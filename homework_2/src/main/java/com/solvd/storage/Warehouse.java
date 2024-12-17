@@ -3,6 +3,8 @@ package com.solvd.storage;
 import com.solvd.Cleanable;
 import com.solvd.Emptyable;
 import com.solvd.Summarizable;
+import com.solvd.exception.CapacityExceededException;
+import com.solvd.lambda.MapAndReduceStream;
 import com.solvd.transaction.Cashier;
 
 import java.util.ArrayList;
@@ -37,8 +39,28 @@ public class Warehouse implements Summarizable, Cleanable, Emptyable {
     }
 
     public void unpackStoragePlace(StoragePlace originalPlace, StoragePlace placeOfDestination) {
-        placeOfDestination.products.addAll(originalPlace.products);
-        originalPlace.products.clear();
+        if(originalPlace.storageSize.getCapacity()<=placeOfDestination.storageSize.getCapacity()
+                && placeOfDestination.getProducts().size() +
+                originalPlace.getProducts().size() < placeOfDestination.storageSize.getCapacity()) {
+            placeOfDestination.products.addAll(originalPlace.products);
+            originalPlace.products.clear();
+            placeOfDestination.setNotClean();
+        }
+        else throw new CapacityExceededException("Could not unpack as capacity would be exceeded!");
+
+    }
+
+    public Double calculateElectricityCost(){
+        MapAndReduceStream<StoragePlace, Double> mapAndReduceStream =
+                (stream, function, reducer) ->
+                        stream
+                                .map(function)
+                                .reduce(0.0, reducer);
+        return mapAndReduceStream.mapAndReduce(
+                places.stream(),
+                StoragePlace::calculateElectricityCost,
+                Double::sum
+        );
     }
 
     @Override

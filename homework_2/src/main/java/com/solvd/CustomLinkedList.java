@@ -1,5 +1,7 @@
 package com.solvd;
 
+import java.util.stream.Stream;
+
 public class CustomLinkedList<T> {
 
     private static class Node<T> {
@@ -163,6 +165,15 @@ public class CustomLinkedList<T> {
         }
     }
 
+    public Stream<T> stream(){
+        Stream.Builder<T> builder = Stream.builder();
+        Node<T> current = head;
+        while (current != tail.next) {
+            builder.add(current.data);
+            current = current.next;
+        }
+        return builder.build();
+    }
 
 
 }

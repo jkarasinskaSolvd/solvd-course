@@ -1,11 +1,15 @@
 package com.solvd.storage;
 
 import com.solvd.*;
+import com.solvd.lambda.FilterAndMapStream;
+import com.solvd.lambda.MapAndReduceStream;
 import com.solvd.transaction.Cashier;
+import com.solvd.transaction.Client;
 import com.solvd.transaction.Register;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyable {
     private static String brandName;
@@ -21,7 +25,7 @@ public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyab
     private List<Cashier> cashierList;
     private Boolean isClean = false;
 
-    static{
+    static {
         brandName = "Supermarket";
     }
 
@@ -132,21 +136,29 @@ public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyab
         return supermarketId;
     }
 
+    public void updateCard(Client client){
+        if(!client.getLoyaltyCard().getDiscountType().equals(client.nextCard())){
+            client.getLoyaltyCard().setDiscountType(client.nextCard());
+        }
+    }
+
     @Override
     public void summarize() {
         List<Localizable> locationList = new ArrayList<>();
         locationList.addAll(storagePlaceList);
         locationList.addAll(registerList);
         System.out.printf("Summary of: " + this.name + "\n\n" + "Locations: \n");
-        for(Localizable loc : locationList){
+        for (Localizable loc : locationList) {
             System.out.printf(loc.returnLocation());
         }
 
         System.out.print("\nStorage Places: \n");
-        for(StoragePlace storagePlace : storagePlaceList) {
+        for (StoragePlace storagePlace : storagePlaceList) {
             storagePlace.summarize();
         }
         warehouse.summarize();
+
+        System.out.println("Monthly electricity cost: "+calculateElectricityCost());
         System.out.print("End of summary\n\n");
     }
 
@@ -157,10 +169,10 @@ public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyab
 
     @Override
     public void clean(Cashier cashier) {
-        if(!isClean){
+        if (!isClean) {
             isClean = true;
             System.out.println("Supermarket cleaned by: " + cashier.getCashierId());
-        }else {
+        } else {
             System.out.println("Supermarket is clean, do something else");
         }
     }
@@ -168,9 +180,40 @@ public class Supermarket implements Summarizable, Adressable, Cleanable, Emptyab
     @Override
     public void empty() {
         warehouse.empty();
-        for(StoragePlace place : storagePlaceList){
+        for (StoragePlace place : storagePlaceList) {
             place.empty();
         }
         System.out.println("Supermarket " + name + " is empty");
+    }
+
+    public String displayPlacesToClean() {
+        FilterAndMapStream<StoragePlace, String> filterAndMapStream =
+                (stream, predicate, function) -> stream
+                        .filter(predicate)
+                        .map(function);
+
+        Stream<String> placesToClean =
+                filterAndMapStream.filterAndMap(storagePlaceList.stream(), StoragePlace::getNotClean, StoragePlace::getName);
+        StringBuilder summary = new StringBuilder();
+        summary.append("Places to clean:\n");
+        placesToClean.forEach(
+                place -> summary.append(place).append("\n")
+        );
+        return summary.toString();
+
+    }
+
+    public Double calculateElectricityCost() {
+        MapAndReduceStream<StoragePlace, Double> mapAndReduceStream =
+                (stream, function, reducer) ->
+                        stream
+                                .map(function)
+                                .reduce(0.0, reducer);
+        Double supermarketElectricityCost = mapAndReduceStream.mapAndReduce(
+                storagePlaceList.stream(),
+                StoragePlace::calculateElectricityCost,
+                Double::sum
+                );
+        return supermarketElectricityCost + warehouse.calculateElectricityCost();
     }
 }
