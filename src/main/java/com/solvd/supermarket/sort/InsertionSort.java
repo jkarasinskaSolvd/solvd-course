@@ -1,4 +1,4 @@
-package com.solvd.homework_1;
+package com.solvd.supermarket.sort;
 //Insertion Sort implementation in Java
 
 public class InsertionSort {

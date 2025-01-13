@@ -1,4 +1,4 @@
-package com.solvd.homework8;
+package com.solvd.supermarket.wordcount;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,10 +16,10 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 public class Main {
     public static final void main(String[] args) {
         try {
-            String fileContent =  readFileToString(new File("turtle.txt"), Charset.defaultCharset());
+            String fileContent =  readFileToString(new File("src/main/resources/turtle.txt"), Charset.defaultCharset());
             fileContent = StringUtils.replaceChars(fileContent, "\n.,\r", " ");
             Set<String> words = new HashSet<>(Arrays.asList(StringUtils.split(fileContent, " ")));
-            File resultFile = new File("result.txt");
+            File resultFile = new File("target/result.txt");
             writeStringToFile(resultFile, "", Charset.defaultCharset(), false);
             for(String word : words) {
                 writeStringToFile(resultFile, word + ": " + countMatches(fileContent, word) + "\n", Charset.defaultCharset(), true);

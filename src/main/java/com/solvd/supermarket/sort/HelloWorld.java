@@ -1,4 +1,4 @@
-package com.solvd.homework_1;
+package com.solvd.supermarket.sort;
 
 class HelloWorld{
 	public final static void main(String[] args){

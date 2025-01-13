@@ -137,7 +137,7 @@ public final class Transaction {
     public void saveReceiptToFile() throws FileSaveFailureException {
 
         try(BufferedWriter myWriter = new BufferedWriter(new FileWriter
-                ("receipt"+date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+".txt"))){
+                ("target/receipt"+date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+".txt"))){
 
             myWriter.write(printReceipt());
             myWriter.flush();
