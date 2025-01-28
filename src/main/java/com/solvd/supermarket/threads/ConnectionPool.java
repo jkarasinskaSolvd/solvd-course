@@ -13,20 +13,20 @@ public class ConnectionPool {
         this.capacity = capacity;
         this.blockingQueue = new LinkedBlockingDeque<>(capacity);
         for (int i = 0; i < capacity; i++) {
-             blockingQueue.offer(new MockedConnection(i, "host"+i));
+            blockingQueue.offer(new MockedConnection(i, "host"+i));
         }
     }
 
     public static ConnectionPool getInstance(Integer capacity) {
         ConnectionPool result = instance;
-            if (result == null) {
-                    synchronized (ConnectionPool.class) {
-                    result = instance;
-                    if (result == null)
-                        instance = result = new ConnectionPool(capacity);
-                }
+        if (result == null) {
+            synchronized (ConnectionPool.class) {
+                result = instance;
+                if (result == null)
+                    instance = result = new ConnectionPool(capacity);
             }
-            return result;
+        }
+        return result;
     }
 
     public MockedConnection getMockedConnection() throws InterruptedException {

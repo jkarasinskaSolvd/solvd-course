@@ -1,5 +1,7 @@
 package com.solvd.supermarket.threads;
 
+import com.solvd.supermarket.threads.ConnectionPool;
+
 public class SupermarketThread extends Thread {
     private ConnectionPool pool;
     private static Integer counter = 0;
