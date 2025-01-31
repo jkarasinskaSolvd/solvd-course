@@ -37,4 +37,14 @@ public class Hangar {
     public void setAirportId(Long airportId) {
         this.airportId = airportId;
     }
+
+    @Override
+    public String toString() {
+        return "Hangar{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", capacity=" + capacity +
+                ", airportId=" + airportId +
+                '}';
+    }
 }

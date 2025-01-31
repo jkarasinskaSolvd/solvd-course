@@ -37,4 +37,14 @@ public class Airport {
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
+
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", addressId=" + addressId +
+                '}';
+    }
 }

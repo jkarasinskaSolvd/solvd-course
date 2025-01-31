@@ -1,0 +1,18 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="hangar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="20"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="capacity" type="xs:integer"/>
+                <xs:element name="airportId" type="xs:long"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:nonNegativeInteger"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

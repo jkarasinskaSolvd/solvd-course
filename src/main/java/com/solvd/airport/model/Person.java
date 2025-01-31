@@ -46,4 +46,15 @@ public class Person {
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", addressId=" + addressId +
+                '}';
+    }
 }

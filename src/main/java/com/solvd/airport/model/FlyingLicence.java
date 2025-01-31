@@ -48,4 +48,15 @@ public class FlyingLicence {
     public void setPilotId(Long pilotId) {
         this.pilotId = pilotId;
     }
+
+    @Override
+    public String toString() {
+        return "FlyingLicence{" +
+                "id=" + id +
+                ", licenceCode='" + licenceCode + '\'' +
+                ", issueDate=" + issueDate +
+                ", expirationDate=" + expirationDate +
+                ", pilotId=" + pilotId +
+                '}';
+    }
 }

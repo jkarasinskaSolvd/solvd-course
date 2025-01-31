@@ -64,4 +64,17 @@ public class Address {
     public void setCountryId(Long countryId) {
         this.countryId = countryId;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", postCode='" + postCode + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNumber='" + streetNumber + '\'' +
+                ", apartmentNumber='" + apartmentNumber + '\'' +
+                ", countryId=" + countryId +
+                '}';
+    }
 }

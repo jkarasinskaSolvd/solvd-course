@@ -1,0 +1,6 @@
+<person id = "123">
+    <firstName>John</firstName>
+    <secondName>Mark</secondName>
+    <lastName>Smith</lastName>
+    <addressId>489</addressId>
+</person>
