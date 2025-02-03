@@ -1,5 +1,12 @@
 package com.solvd.airport.model;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "address")
+@XmlType(propOrder = { "id", "city", "postCode", "street", "streetNumber", "apartmentNumber","countryId" })
 public class Address {
     private Long id;
     private String city;
@@ -13,6 +20,7 @@ public class Address {
         return id;
     }
 
+    @XmlAttribute
     public void setId(Long id) {
         this.id = id;
     }
@@ -21,6 +29,7 @@ public class Address {
         return city;
     }
 
+    @XmlElement(name = "city")
     public void setCity(String city) {
         this.city = city;
     }
@@ -29,6 +38,7 @@ public class Address {
         return postCode;
     }
 
+    @XmlElement(name = "postCode")
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
@@ -37,6 +47,7 @@ public class Address {
         return street;
     }
 
+    @XmlElement(name = "street")
     public void setStreet(String street) {
         this.street = street;
     }
@@ -45,6 +56,7 @@ public class Address {
         return streetNumber;
     }
 
+    @XmlElement(name = "streetNumber")
     public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
@@ -53,6 +65,7 @@ public class Address {
         return apartmentNumber;
     }
 
+    @XmlElement(name = "apartmentNumber")
     public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
     }
@@ -61,6 +74,7 @@ public class Address {
         return countryId;
     }
 
+    @XmlElement(name = "countryId")
     public void setCountryId(Long countryId) {
         this.countryId = countryId;
     }
