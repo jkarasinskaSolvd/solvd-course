@@ -26,12 +26,12 @@ public class XMLMain {
         System.out.println("\nXSD SCHEMA VALIDATION\n");
         GeneralValidator validator = new GeneralValidator();
         try {
-            System.out.println("Address validation result: "+validator.isValid("Address.xsd","Address.xml"));
-            System.out.println("Airport validation result: "+validator.isValid("Airport.xsd","Airport.xml"));
-            System.out.println("Country validation result: "+validator.isValid("Country.xsd","Country.xml"));
-            System.out.println("Flying licence validation result: "+validator.isValid("FlyingLicence.xsd","FlyingLicence.xml"));
-            System.out.println("Hangar validation result: "+validator.isValid("Hangar.xsd","Hangar.xml"));
-            System.out.println("Person validation result: "+validator.isValid("Person.xsd","Person.xml"));
+            System.out.println("Address validation result: " + validator.isValid("Address.xsd", "Address.xml"));
+            System.out.println("Airport validation result: " + validator.isValid("Airport.xsd", "Airport.xml"));
+            System.out.println("Country validation result: " + validator.isValid("Country.xsd", "Country.xml"));
+            System.out.println("Flying licence validation result: " + validator.isValid("FlyingLicence.xsd", "FlyingLicence.xml"));
+            System.out.println("Hangar validation result: " + validator.isValid("Hangar.xsd", "Hangar.xml"));
+            System.out.println("Person validation result: " + validator.isValid("Person.xsd", "Person.xml"));
         } catch (IOException | SAXException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -107,7 +107,7 @@ public class XMLMain {
             throw new RuntimeException(e);
         }
 //PARSE XML WITH JAXB
-        System.out.println("Parse xml with JAXB");
+        System.out.println("\nPARSING WITH JAXB\n");
 
         Address address = new Address();
         address.setId(555L);
@@ -122,7 +122,7 @@ public class XMLMain {
         JAXBContext context = null;
         try {
             context = JAXBContext.newInstance(Address.class);
-            Marshaller mar= context.createMarshaller();
+            Marshaller mar = context.createMarshaller();
             mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             mar.marshal(address, new File("src/main/java/com/solvd/airport/xml/AddressJAXB.xml"));
 
@@ -145,7 +145,7 @@ public class XMLMain {
 
         try {
             context = JAXBContext.newInstance(Flight.class);
-            Marshaller mar= context.createMarshaller();
+            Marshaller mar = context.createMarshaller();
             mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             mar.marshal(flight, new File("src/main/java/com/solvd/airport/xml/FlightJAXB.xml"));
 
@@ -159,19 +159,191 @@ public class XMLMain {
         flyingLicence.setId(23L);
         flyingLicence.setLicenceCode("123dd");
         flyingLicence.setIssueDate(LocalDate.now());
-        flyingLicence.setExpirationDate(LocalDate.of(2027,5,12));
+        flyingLicence.setExpirationDate(LocalDate.of(2027, 5, 12));
         flyingLicence.setPilotId(12L);
 
 
         try {
             context = JAXBContext.newInstance(FlyingLicence.class);
-            Marshaller mar= context.createMarshaller();
+            Marshaller mar = context.createMarshaller();
             mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             mar.marshal(flyingLicence, new File("src/main/java/com/solvd/airport/xml/FlyingLicenceJAXB.xml"));
 
             FlyingLicence flyingLicenceRead = (FlyingLicence) context.createUnmarshaller()
                     .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/FlyingLicenceJAXB.xml"));
             System.out.println(flyingLicenceRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Airline airline = new Airline();
+        airline.setId(111L);
+        airline.setName("RaianAir");
+        airline.setRegistrationCountryId(2L);
+
+        try {
+            context = JAXBContext.newInstance(Airline.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(airline, new File("src/main/java/com/solvd/airport/xml/AirlineJAXB.xml"));
+
+            Airline airlineRead = (Airline) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/AirlineJAXB.xml"));
+            System.out.println(airlineRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Airport airport = new Airport();
+        airport.setId(111L);
+        airport.setName("JB Airport");
+        airport.setCode("12PL");
+        airport.setAddressId(12L);
+
+        try {
+            context = JAXBContext.newInstance(Airport.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(airport, new File("src/main/java/com/solvd/airport/xml/AirportJAXB.xml"));
+
+            Airport airportRead = (Airport) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/AirportJAXB.xml"));
+            System.out.println(airportRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Country country = new Country();
+        country.setId(111L);
+        country.setName("Germany");
+        country.setCode("GE");
+
+        try {
+            context = JAXBContext.newInstance(Country.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(country, new File("src/main/java/com/solvd/airport/xml/CountryJAXB.xml"));
+
+            Country countryRead = (Country) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/CountryJAXB.xml"));
+            System.out.println(countryRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Hangar hangar = new Hangar();
+        hangar.setId(111L);
+        hangar.setAirportId(2L);
+        hangar.setCapacity(127);
+        hangar.setName("11HAp");
+
+        try {
+            context = JAXBContext.newInstance(Hangar.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(hangar, new File("src/main/java/com/solvd/airport/xml/HangarJAXB.xml"));
+
+            Hangar hangarRead = (Hangar) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/HangarJAXB.xml"));
+            System.out.println(hangarRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Person person = new Person();
+        person.setId(111L);
+        person.setFirstName("Ola");
+        person.setLastName("Hap");
+        person.setSecondName("Alicia");
+        person.setAddressId(12L);
+
+        try {
+            context = JAXBContext.newInstance(Person.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(person, new File("src/main/java/com/solvd/airport/xml/PersonJAXB.xml"));
+
+            Person personRead = (Person) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/PersonJAXB.xml"));
+            System.out.println(personRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Plane plane = new Plane();
+        plane.setId(111L);
+        plane.setAirlineId(2L);
+        plane.setPlaneTypeId(1L);
+        plane.setHangarId(12L);
+        plane.setNumberOfSeats(120);
+        plane.setRegistration("123PL");
+        plane.setProductionYear(2008);
+
+        try {
+            context = JAXBContext.newInstance(Plane.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(plane, new File("src/main/java/com/solvd/airport/xml/PlaneJAXB.xml"));
+
+            Plane planeRead = (Plane) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/PlaneJAXB.xml"));
+            System.out.println(planeRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        PlaneType planeType = new PlaneType();
+        planeType.setId(123L);
+        planeType.setName("War plane");
+
+        try {
+            context = JAXBContext.newInstance(PlaneType.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(planeType, new File("src/main/java/com/solvd/airport/xml/PlaneTypeJAXB.xml"));
+
+            PlaneType planeTypeRead = (PlaneType) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/PlaneTypeJAXB.xml"));
+            System.out.println(planeTypeRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Ticket ticket = new Ticket();
+        ticket.setId(111L);
+        ticket.setTicketCode("123456j");
+        ticket.setSeat("12C");
+        ticket.setTicketClassId(1L);
+        ticket.setFlightId(123L);
+        ticket.setPassengerId(12L);
+
+        try {
+            context = JAXBContext.newInstance(Ticket.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(ticket, new File("src/main/java/com/solvd/airport/xml/TicketJAXB.xml"));
+
+            Ticket ticketRead = (Ticket) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/TicketJAXB.xml"));
+            System.out.println(ticketRead);
+        } catch (JAXBException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        TicketClass ticketClass = new TicketClass();
+        ticketClass.setId(3L);
+        ticketClass.setName("VIP class");
+
+        try {
+            context = JAXBContext.newInstance(TicketClass.class);
+            Marshaller mar = context.createMarshaller();
+            mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            mar.marshal(ticketClass, new File("src/main/java/com/solvd/airport/xml/TicketClassJAXB.xml"));
+
+            TicketClass ticketClassRead = (TicketClass) context.createUnmarshaller()
+                    .unmarshal(new FileReader("src/main/java/com/solvd/airport/xml/TicketClassJAXB.xml"));
+            System.out.println(ticketClassRead);
         } catch (JAXBException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }

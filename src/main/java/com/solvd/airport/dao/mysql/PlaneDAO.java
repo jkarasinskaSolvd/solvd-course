@@ -32,7 +32,7 @@ public class PlaneDAO implements IPlaneDAO {
                 plane.setProductionYear(rs.getInt("production_year"));
                 plane.setPlaneTypeId(rs.getLong("plane_type_id"));
                 plane.setHangarId(rs.getLong("hangar_id"));
-                plane.setAirlaneId(rs.getLong("airlane_id"));
+                plane.setAirlineId(rs.getLong("airlane_id"));
 
                 return plane;
             }
@@ -59,7 +59,7 @@ public class PlaneDAO implements IPlaneDAO {
             prstmt.setInt(4, entity.getProductionYear());
             prstmt.setLong(5, entity.getPlaneTypeId());
             prstmt.setLong(6, entity.getHangarId());
-            prstmt.setLong(7, entity.getAirlaneId());
+            prstmt.setLong(7, entity.getAirlineId());
             prstmt.executeUpdate();
             return true;
 
@@ -83,7 +83,7 @@ public class PlaneDAO implements IPlaneDAO {
             prstmt.setInt(3, entity.getProductionYear());
             prstmt.setLong(4, entity.getPlaneTypeId());
             prstmt.setLong(5, entity.getHangarId());
-            prstmt.setLong(6, entity.getAirlaneId());
+            prstmt.setLong(6, entity.getAirlineId());
             prstmt.setLong(7, entity.getId());
             prstmt.executeUpdate();
             return true;
@@ -129,7 +129,7 @@ public class PlaneDAO implements IPlaneDAO {
                 plane.setProductionYear(rs.getInt("production_year"));
                 plane.setPlaneTypeId(rs.getLong("plane_type_id"));
                 plane.setHangarId(rs.getLong("hangar_id"));
-                plane.setAirlaneId(rs.getLong("airlane_id"));
+                plane.setAirlineId(rs.getLong("airlane_id"));
                 planes.add(plane);
             }
 

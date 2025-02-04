@@ -1,5 +1,12 @@
 package com.solvd.airport.model;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "plane")
+@XmlType(propOrder = {"id", "registration","numberOfSeats","productionYear","planeTypeId","hangarId","airlineId"})
 public class Plane {
     private Long id;
     private String registration;
@@ -7,12 +14,13 @@ public class Plane {
     private Integer productionYear;
     private Long planeTypeId;
     private Long hangarId;
-    private Long airlaneId;
+    private Long airlineId;
 
     public Long getId() {
         return id;
     }
 
+    @XmlAttribute
     public void setId(Long id) {
         this.id = id;
     }
@@ -21,6 +29,7 @@ public class Plane {
         return registration;
     }
 
+    @XmlElement(name = "registration")
     public void setRegistration(String registration) {
         this.registration = registration;
     }
@@ -29,6 +38,7 @@ public class Plane {
         return numberOfSeats;
     }
 
+    @XmlElement(name = "numberOfSeats")
     public void setNumberOfSeats(Integer numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
@@ -37,6 +47,7 @@ public class Plane {
         return productionYear;
     }
 
+    @XmlElement(name = "productionYear")
     public void setProductionYear(Integer productionYear) {
         this.productionYear = productionYear;
     }
@@ -45,6 +56,7 @@ public class Plane {
         return planeTypeId;
     }
 
+    @XmlElement(name = "planeTypeId")
     public void setPlaneTypeId(Long planeTypeId) {
         this.planeTypeId = planeTypeId;
     }
@@ -53,15 +65,30 @@ public class Plane {
         return hangarId;
     }
 
+    @XmlElement(name = "hangar")
     public void setHangarId(Long hangarId) {
         this.hangarId = hangarId;
     }
 
-    public Long getAirlaneId() {
-        return airlaneId;
+    public Long getAirlineId() {
+        return airlineId;
     }
 
-    public void setAirlaneId(Long airlaneId) {
-        this.airlaneId = airlaneId;
+    @XmlElement(name = "airlineId")
+    public void setAirlineId(Long airlineId) {
+        this.airlineId = airlineId;
+    }
+
+    @Override
+    public String toString() {
+        return "Plane{" +
+                "id=" + id +
+                ", registration='" + registration + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                ", productionYear=" + productionYear +
+                ", planeTypeId=" + planeTypeId +
+                ", hangarId=" + hangarId +
+                ", airlineId=" + airlineId +
+                '}';
     }
 }
