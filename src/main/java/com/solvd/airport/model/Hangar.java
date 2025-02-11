@@ -1,5 +1,7 @@
 package com.solvd.airport.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -7,11 +9,23 @@ import jakarta.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "hangar")
 @XmlType(propOrder = {"id", "name","capacity","airportId"})
+@JsonRootName("Hangar")
+@JsonPropertyOrder({"id", "name","capacity","airportId"})
 public class Hangar {
     private Long id;
     private String name;
     private Integer capacity;
     private Long airportId;
+
+    public Hangar() {
+    }
+
+    public Hangar(Long id, String name, Integer capacity, Long airportId) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.airportId = airportId;
+    }
 
     public Long getId() {
         return id;

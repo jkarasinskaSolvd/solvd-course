@@ -1,5 +1,7 @@
 package com.solvd.airport.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.solvd.airport.xml.jaxb.JAXBLocalDateAdapter;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -11,12 +13,25 @@ import java.time.LocalDate;
 
 @XmlRootElement(name = "flyingLicence")
 @XmlType(propOrder = { "id", "licenceCode", "issueDate", "expirationDate", "pilotId"})
+@JsonRootName("FlyingLicence")
+@JsonPropertyOrder({ "id", "licenceCode", "issueDate", "expirationDate", "pilotId"})
 public class FlyingLicence {
     private Long id;
     private String licenceCode;
     private LocalDate issueDate;
     private LocalDate expirationDate;
     private Long pilotId;
+
+    public FlyingLicence() {
+    }
+
+    public FlyingLicence(Long id, String licenceCode, LocalDate issueDate, LocalDate expirationDate, Long pilotId) {
+        this.id = id;
+        this.licenceCode = licenceCode;
+        this.issueDate = issueDate;
+        this.expirationDate = expirationDate;
+        this.pilotId = pilotId;
+    }
 
     public Long getId() {
         return id;

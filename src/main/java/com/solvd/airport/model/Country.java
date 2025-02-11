@@ -1,12 +1,16 @@
 package com.solvd.airport.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "airline")
+@XmlRootElement(name = "country")
 @XmlType(propOrder = {"id", "name","code"})
+@JsonRootName("Country")
+@JsonPropertyOrder({"id", "name","code"})
 public class Country {
     private Long id;
     private String name;

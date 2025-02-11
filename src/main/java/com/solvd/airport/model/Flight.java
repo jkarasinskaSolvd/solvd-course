@@ -1,5 +1,7 @@
 package com.solvd.airport.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.solvd.airport.xml.jaxb.JAXBLocalDateTimeAdapter;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -11,7 +13,9 @@ import java.time.LocalDateTime;
 @XmlRootElement(name = "flight")
 @XmlType(propOrder = { "id", "startTime", "landingTime", "planeId", "startAirportId", "destinationAirportId",
         "firstPilotId","secondPilotId" })
-
+@JsonRootName(value = "Flight")
+@JsonPropertyOrder( { "id", "startTime", "landingTime", "planeId", "startAirportId", "destinationAirportId",
+        "firstPilotId","secondPilotId" })
 public class Flight {
     private Long id;
     private LocalDateTime startTime;
@@ -21,6 +25,22 @@ public class Flight {
     private Long destinationAirportId;
     private Long firstPilotId;
     private Long secondPilotId;
+
+
+    public Flight() {
+    }
+
+    public Flight(Long id, LocalDateTime startTime, LocalDateTime landingTime, Long planeId, Long startAirportId,
+                  Long destinationAirportId, Long firstPilotId, Long secondPilotId) {
+        this.id = id;
+        this.startTime = startTime;
+        this.landingTime = landingTime;
+        this.planeId = planeId;
+        this.startAirportId = startAirportId;
+        this.destinationAirportId = destinationAirportId;
+        this.firstPilotId = firstPilotId;
+        this.secondPilotId = secondPilotId;
+    }
 
     public Long getId() {
         return id;

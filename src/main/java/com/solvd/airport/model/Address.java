@@ -1,5 +1,8 @@
 package com.solvd.airport.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -7,6 +10,8 @@ import jakarta.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "address")
 @XmlType(propOrder = { "id", "city", "postCode", "street", "streetNumber", "apartmentNumber","countryId" })
+@JsonRootName(value = "Address")
+@JsonPropertyOrder( { "id", "city", "postCode", "street", "streetNumber", "apartmentNumber","countryId" })
 public class Address {
     private Long id;
     private String city;
@@ -16,6 +21,20 @@ public class Address {
     private String apartmentNumber;
     private Long countryId;
 
+    public Address() {
+    }
+
+    public Address(Long id, String city, String postCode, String street, String streetNumber, String apartmentNumber, Long countryId) {
+        this.id = id;
+        this.city = city;
+        this.postCode = postCode;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.apartmentNumber = apartmentNumber;
+        this.countryId = countryId;
+    }
+
+    @JsonGetter
     public Long getId() {
         return id;
     }
@@ -25,6 +44,7 @@ public class Address {
         this.id = id;
     }
 
+    @JsonGetter
     public String getCity() {
         return city;
     }
@@ -34,6 +54,7 @@ public class Address {
         this.city = city;
     }
 
+    @JsonGetter
     public String getPostCode() {
         return postCode;
     }
@@ -43,6 +64,7 @@ public class Address {
         this.postCode = postCode;
     }
 
+    @JsonGetter
     public String getStreet() {
         return street;
     }
@@ -52,6 +74,7 @@ public class Address {
         this.street = street;
     }
 
+    @JsonGetter
     public String getStreetNumber() {
         return streetNumber;
     }
@@ -61,6 +84,7 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
+    @JsonGetter
     public String getApartmentNumber() {
         return apartmentNumber;
     }
@@ -70,6 +94,7 @@ public class Address {
         this.apartmentNumber = apartmentNumber;
     }
 
+    @JsonGetter
     public Long getCountryId() {
         return countryId;
     }
